@@ -4,13 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using AngularCodingTest.Models;
+using System.Net;
 
 namespace AngularCodingTest.Controllers
 {
     public class HomeController : Controller
-    {
+    {        
+
         public IActionResult Index()
-        {
+        {            
             return View();
         }
 

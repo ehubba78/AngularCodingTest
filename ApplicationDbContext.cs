@@ -27,7 +27,7 @@ namespace AngularCodingTest
             var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(-index).AddMinutes(rng.Next(-1000, 1000)),
-                TemperatureC = rng.Next(-20, 55),
+                TemperatureC = rng.Next(-40, 55),
             });
 
             Forecasts.AddRange(forecasts);

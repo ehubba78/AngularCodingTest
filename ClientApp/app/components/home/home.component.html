@@ -1,10 +1,13 @@
 <h1>Hello, world!</h1>
 
 <h3>TODO</h3>
-<p>It's a
+<!--<p>It's a
     <code>summary</code> day outside as of
     <code>time since last reading</code> minutes ago
-</p>
+</p>-->
+
+<p *ngIf="temperature">{{temperature.temperature}}</p>
+
 
 <h3 style="margin-top:50px">Generated Text</h3>
 <p>Welcome to your new single-page application, built with:</p>
