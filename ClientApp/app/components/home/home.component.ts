@@ -7,16 +7,22 @@ import { Http } from '@angular/http';
 })
 export class HomeComponent  {
 
-    public temperature: GetTemp;
+    public message: GetTemp;
 
     constructor(http: Http, @Inject("BASE_URL") baseUrl: string) {
         http.get(baseUrl + "api/WeatherData/GetCurrTemp").subscribe(result => {
-            this.temperature = result.json() as GetTemp;
+            this.message = result.json() as GetTemp;
         }, error => console.error(error));
     }
 }
 
-interface GetTemp {
-    temperature: string
+interface GetTemp {    
+    city: string;
+    temperatureC: string;
+    temperatureF: string;
+    localTime: string;
+    message: string;
+    weather: string;
+    relative_humidity: string;
 }
 

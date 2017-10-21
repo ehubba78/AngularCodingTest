@@ -39,9 +39,10 @@ namespace AngularCodingTest.Controllers
 
         public IActionResult GetCurrTemp()
         {
-            var value = new CurrentTemperature();
-
-            value.Temperature = Common.GlobalOperations.GetCurrentTemperature(null);
+            var value = new CurrentTemperature
+            {
+                Message = Common.GlobalOperations.GetCurrentTemperature(null)
+            };
 
             return Ok(value);
         }       

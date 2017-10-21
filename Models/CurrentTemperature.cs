@@ -7,6 +7,13 @@ namespace AngularCodingTest.Models
 {
     public class CurrentTemperature
     {
-        public string Temperature { get; set; }
+        internal string city;
+
+        public string TemperatureC { get; set; }
+        public string TemperatureF { get; set; }
+        public string LocalTime { get; set; }
+        public string Message { get; set; }
+        public string Weather { get; set; }
+        public string relative_humidity { get; set; }
     }
 }

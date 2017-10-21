@@ -6,7 +6,11 @@
     <code>time since last reading</code> minutes ago
 </p>-->
 
-<p *ngIf="temperature">{{temperature.temperature}}</p>
+<div *ngIf="message">
+    <div class="alert alert-warning" role="alert">
+        {{message.message}}
+    </div>
+</div>
 
 
 <h3 style="margin-top:50px">Generated Text</h3>

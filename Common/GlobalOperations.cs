@@ -8,6 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Net;
 using System.Net.Sockets;
+using AngularCodingTest.Models;
+using Newtonsoft.Json;
 
 namespace AngularCodingTest.Common
 {
@@ -28,10 +30,9 @@ namespace AngularCodingTest.Common
             doc.Load("http://www.freegeoip.net/xml");
             XmlNodeList nodeLstCity = doc.GetElementsByTagName("City");
             City = "" + nodeLstCity[0].InnerText;
-            int Temperature = GetCurrentTemperatureFromCity(City);
-            string TempSummary = GetSummaryFromTemperature(Temperature);
+            var result = GetCurrentTemperatureFromCity(City);
 
-            return "It's going to be " + TempSummary + " today in the city of " + City + ", a high of " + Temperature + "C.  Be sure to dress accordingly outside!";
+            return "Forecasting " + result.TemperatureC + " C (" + result.TemperatureF + " F) with a humitity of " + result.relative_humidity + " in the area of " + result.city + "...Last Updated on: " + result.LocalTime;
                     
         }
 
@@ -40,10 +41,63 @@ namespace AngularCodingTest.Common
         /// </summary>
         /// <param name="City"></param>
         /// <returns></returns>
-        private static int GetCurrentTemperatureFromCity(string City)
-        {            
-            var rng = new Random();
-            return rng.Next(-40, 55);
+        private static CurrentTemperature GetCurrentTemperatureFromCity(string City)
+        {
+            //var rng = new Random();
+            //return rng.Next(-40, 55);
+            var foundentry = new CurrentTemperature();
+
+            var WULink = "http://api.wunderground.com/api/77c9b6614c88bc8a/conditions/q/CA/" + City + ".xml";
+
+            using (var w = new WebClient())
+            {
+                var weather = w.DownloadString(WULink);
+
+                using (var reader = XmlReader.Create(new StringReader(weather)))
+                {
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if (reader.Name.Equals("local_time_rfc822"))
+                                {
+                                    reader.Read();
+                                    foundentry.LocalTime = reader.Value;
+                                }
+                                else if (reader.Name.Equals("weather"))
+                                {
+                                    reader.Read();
+                                    foundentry.Weather = reader.Value;
+                                }
+                                else if (reader.Name.Equals("temp_f"))
+                                {
+                                    reader.Read();
+                                    foundentry.TemperatureF = reader.Value;
+                                }
+                                else if (reader.Name.Equals("temp_c"))
+                                {
+                                    reader.Read();
+                                    foundentry.TemperatureC = reader.Value;
+                                }
+                                else if (reader.Name.Equals("full"))
+                                {
+                                    reader.Read();
+                                    foundentry.city = reader.Value;
+                                }
+                                else if (reader.Name.Equals("relative_humidity"))
+                                {
+                                    reader.Read();
+                                    foundentry.relative_humidity = reader.Value;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            
+
+            return foundentry;
         }
 
         internal static string GetSummaryFromTemperature(int TemperatureC)
